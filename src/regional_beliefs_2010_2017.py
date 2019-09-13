@@ -22,7 +22,6 @@ def create_region_matrix():
         region_array = region_df['percent_yes'].values
         region_matrix[i, 0:9] = region_array
 
-
 def create_region_matrix_weighted():
     for i in range(4):
         region_df = df_slim[df_slim.region4 == i + 1]
