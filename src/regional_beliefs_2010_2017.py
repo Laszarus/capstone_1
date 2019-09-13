@@ -24,11 +24,12 @@ will be summed instead of counting a particular variable.
 # this survey is weird and skips 2009? so i'm just going to start at 2010 for the sake of consistency...
 # setting up new columns to sum later
 df = df[df.year != 1]
+
 df['humans_cause'] = np.where(df['cause_original']==1, 1, 0)
 df['humans_cause_weighted'] = df['humans_cause'] * df['weight_wave']
 
 # 'slimming' down the dataframe to the relevant columns
-df_slim = df[['region4','year','humans_cause','humans_cause_weighted','weight_wave','case_ID']]
+df_slim = df[['region4','year','humans_cause','humans_cause_weighted','weight_wave']]
 
 # creating a 4x8 matrix with regions on the y-axis, years on the x-axis, % belief per year per region
 region_matrix = np.empty([4,8])
@@ -38,10 +39,9 @@ def create_region_matrix():
         region_df = region_df.groupby('year').agg({
             'humans_cause' : np.sum,
             'humans_cause_weighted' : np.sum,
-            'weight_wave' : np.sum,
-            'case_ID' : np.count_nonzero
+            'weight_wave' : np.count_nonzero
         })
-        region_df.rename(columns={'case_ID' : 'total_asked'}, inplace=True)
+        region_df.rename(columns={'weight_wave' : 'total_asked'}, inplace=True)
         region_df['percent_yes'] = (region_df['humans_cause'] / region_df['total_asked']) * 100
         region_array = region_df['percent_yes'].values
         region_matrix[i, 0:9] = region_array
@@ -55,7 +55,6 @@ def create_region_matrix_weighted():
             'humans_cause' : np.sum,
             'humans_cause_weighted' : np.sum,
             'weight_wave' : np.sum,
-            'case_ID' : np.count_nonzero
         })
         region_df.rename(columns={'weight_wave' : 'total_asked_weighted'}, inplace=True)
         region_df['percent_yes_weighted'] = (region_df['humans_cause_weighted'] / region_df['total_asked_weighted']) * 100
