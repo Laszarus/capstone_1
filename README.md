@@ -22,8 +22,8 @@ so to avoid making assumptions about a gap in the data, I just cut that year out
 2172        1.0             2.0                             4.0            2.0
 2173        3.0             2.0                             4.0            1.0
 ```
-![](images/survey_questions_snap.png)
 
+![](images/survey_question_snap.png)
 
 
 *Who knew science could be so poetic?*
