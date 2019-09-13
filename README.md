@@ -6,10 +6,10 @@ Surveys were administered twice a year in 'waves' from 2010-2017 (appproximately
 so to avoid making assumptions about a gap in the data, I just cut that year out. That leaves us with:
 
 **52 columns, 17,860 points:**
-    -3 metadata columns
-    -2 weighting columns
-    -18 opinion questions, bucketed
-    -29 demographical questions, bucketed
+    - 3 metadata columns
+    - 2 weighting columns
+    - 18 opinion questions, bucketed
+    - 29 demographical questions, bucketed
 
 **
 ```
@@ -20,7 +20,7 @@ so to avoid making assumptions about a gap in the data, I just cut that year out
 2172        1.0             2.0                             4.0            2.0
 2173        3.0             2.0                             4.0            1.0
 ```
-![Image](/Users/lazarus/galvanize/capstone_1/images/survey_questions_snap.png)
+![](/images/survey_questions_snap.png)
 ```
 In [11]: df.iloc[1364, 7]                                                                                                                                                                     
 Out[11]: 'with the world so hate mongered the lord will soon comr to take us home'
