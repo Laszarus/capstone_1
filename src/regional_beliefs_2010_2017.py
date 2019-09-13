@@ -5,34 +5,10 @@ import matplotlib.pyplot as plt
 import pyreadstat
 
 '''
-pyreadstat is a python package to read and write: 
--sas (sas7bdat, sas7bcat, xport)
--spps (sav, zsav, por)
--stata (dta)
-data files into/from pandas dataframes
-'''
-
-df, meta = pyreadstat.read_sav('/Users/lazarus/galvanize/datasets/osfstorage-archive/CCAM SPSS Data.sav')
-df.to_csv('/Users/lazarus/galvanize/capstone_1/data/climate_survey_data.csv')
-
-'''
 Each respondent was given a weight, based on the sample demographics vs the US census demographics, in order to 
 make the sample responses more accurately reflect those of the whole population. Essentially the weighted columns
 will be summed instead of counting a particular variable. 
 '''
-
-# this survey is weird and skips 2009? so i'm just going to start at 2010 for the sake of consistency...
-# setting up new columns to sum later
-df = df[df.year != 1]
-
-df['humans_cause'] = np.where(df['cause_original']==1, 1, 0)
-df['humans_cause_weighted'] = df['humans_cause'] * df['weight_wave']
-
-# 'slimming' down the dataframe to the relevant columns
-df_slim = df[['region4','year','humans_cause','humans_cause_weighted','weight_wave']]
-
-# creating a 4x8 matrix with regions on the y-axis, years on the x-axis, % belief per year per region
-region_matrix = np.empty([4,8])
 def create_region_matrix():
     for i in range(4):
         region_df = df_slim[df_slim.region4 == i + 1]
@@ -46,8 +22,7 @@ def create_region_matrix():
         region_array = region_df['percent_yes'].values
         region_matrix[i, 0:9] = region_array
 
-# same thing, but with weighted scores...
-region_matrix_weighted = np.empty([4,8])
+
 def create_region_matrix_weighted():
     for i in range(4):
         region_df = df_slim[df_slim.region4 == i + 1]
@@ -77,4 +52,30 @@ def plot_regions():
     ax.legend()
     plt.show()
     fig.savefig('/Users/lazarus/galvanize/capstone_1/images/weighted_region4_plot.png')
+
+if __name__ == "__main__":
+    df, meta = pyreadstat.read_sav('/Users/lazarus/galvanize/datasets/osfstorage-archive/CCAM SPSS Data.sav')
+    df.to_csv('/Users/lazarus/galvanize/capstone_1/data/climate_survey_data.csv')
+
+    # this survey is weird and skips 2009? so i'm just going to start at 2010 for the sake of consistency...
+    df = df[df.year != 1]
+
+    df['humans_cause'] = np.where(df['cause_original']==1, 1, 0)
+    df['humans_cause_weighted'] = df['humans_cause'] * df['weight_wave']
+
+    # 'slimming' down the dataframe to the relevant columns
+    df_slim = df[['region4','year','humans_cause','humans_cause_weighted','weight_wave']]
+
+    # creating a 4x8 matrix with regions on the y-axis, years on the x-axis, % belief per year per region
+    region_matrix = np.empty([4,8])
+    create_region_matrix()
+
+    # same thing, but with weighted scores...
+    region_matrix_weighted = np.empty([4,8])
+    create_region_matrix_weighted()
+
+    plot_regions()
+
+
+
 
